@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Luxury Ranking Table</title>
+
+<style>
+/* ---------- FONTS ---------- */
+@font-face {
+  font-family: "PUBGFont";
+  src: url("BebasNeue.ttf");
+}
+
+body {
+  margin: 0;
+  background: #0b0b0e;
+  font-family: "PUBGFont", sans-serif;
+  color: white;
+  overflow: hidden;
+}
+
+.container {
+  width: 100%;
+  max-width: 1600px;
+  margin: 20px auto;
+}
+
+/* ---------- HEADER ---------- */
+.header {
+  display: flex;
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.header div {
+  padding: 18px 5.9px;
+  background: #ffc400;
+  color: black;
+  border-right: 3px solid #ffffff;
+}
+
+.header div:last-child {
+  border-right: none;
+}
+
+.header .rank { width: 100px; text-align: center; }
+.header .team { width: 500px; text-align: left; padding-left: 25px; }
+.header .matches,
+.header .kills,
+.header .place,
+.header .total,
+.header .wwcd,
+.header .diff {
+  width: 170px;
+  text-align: center;
+}
+
+/* ---------- ROW STYLE ---------- */
+.row {
+  display: flex;
+  margin-bottom: 6px;
+  font-size: 32px;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateX(-40px);
+}
+
+.row.animate {
+  animation: slideIn 0.5s forwards;
+}
+
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ---------- CELL STYLE ---------- */
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 8px;
+  font-weight: 600;
+}
+
+/* LEFT PURPLE SECTION */
+.rank-cell {
+  width: 100px;
+  background: goldenrod;
+  color: white;
+  justify-content: center;
+}
+
+.team-cell {
+  width: 500px;
+  background: #7a009f;
+  justify-content: left;
+  gap: 20px;
+  padding-left: 25px;
+}
+
+/* Team Logo */
+.team-cell img {
+  width: 55px;
+  height: 55px;
+  border-radius: 6px;
+  object-fit: contain;
+  background: white;
+  padding: 5px;
+}
+
+/* RIGHT GREY SECTION */
+.stat {
+  width: 170px;
+  background: linear-gradient(to right, #e2e2e2, #b5b5b5);
+  color: black;
+}
+
+/* POINT DIFF PURPLE TEXT */
+.diff-cell {
+  color: #9b00ff;
+  font-weight: 900;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="rank">#</div>
+    <div class="team">TEAM</div>
+    <div class="matches">MATCHES</div>
+    <div class="kills">KILLS</div>
+    <div class="place">PLACE</div>
+    <div class="total">TOTAL</div>
+  </div>
+
+  <!-- TABLE BODY -->
+  <div id="table"></div>
+</div>
+
+<script>
+/* ---------- YOUR SAME JS — ONLY UI UPDATED ---------- */
+
+const SHEET_URL =
+  "https://docs.google.com/spreadsheets/d/1S1PkVH9RY2UBnEgBaxOvd-D4vI5S1anYR0IgGlwGCKc/gviz/tq?gid=0&tqx=out:json";
+
+let allRows = [];
+const rowsPerPage = 6;
+let currentPage = 0;
+
+async function fetchSheet() {
+  const res = await fetch(SHEET_URL);
+  let text = await res.text();
+  text = text.substring(47, text.length - 2);
+  const json = JSON.parse(text);
+  const rows = json.table.rows;
+
+  let matchNumber = 1;
+
+  for (let i = 0; i < 10; i++) {
+    const cell = rows[i]?.c[11]?.v;
+    if (cell && !isNaN(cell)) {
+      matchNumber = Number(cell);
+      break;
+    }
+  }
+
+  const m = matchNumber;
+
+  allRows = [];
+
+  for (let i = 0; i <= 12; i++) {
+    const team = rows[i]?.c[1]?.v ?? "";
+    const logo = rows[i]?.c[2]?.v ?? "";
+
+    const points =
+      m === 1 ? Number(rows[i]?.c[3]?.v ?? 0) :
+      m === 2 ? Number(rows[i]?.c[15]?.v ?? 0) :
+      m === 3 ? Number(rows[i]?.c[27]?.v ?? 0) :
+      m === 4 ? Number(rows[i]?.c[38]?.v ?? 0) :
+      m === 5 ? Number(rows[i]?.c[49]?.v ?? 0) :
+      m === 6 ? Number(rows[i]?.c[60]?.v ?? 0) : 0;
+
+    const booyah = Number(rows[i]?.c[5]?.v ?? 0);
+
+    const placement =
+      m === 1 ? Number(rows[i]?.c[6]?.v ?? 0) :
+      m === 2 ? Number(rows[i]?.c[18]?.v ?? 0) :
+      m === 3 ? Number(rows[i]?.c[29]?.v ?? 0) :
+      m === 4 ? Number(rows[i]?.c[40]?.v ?? 0) :
+      m === 5 ? Number(rows[i]?.c[51]?.v ?? 0) :
+      m === 6 ? Number(rows[i]?.c[62]?.v ?? 0) : 0;
+
+    const kills = points - placement;
+
+    allRows.push({ team, logo, points, booyah, placement, kills });
+  }
+
+  allRows.sort((a, b) => {
+    if (b.points !== a.points) return b.points - a.points;
+    if (b.kills !== a.kills) return b.kills - a.kills;
+    if (a.placement !== b.placement) return a.placement - b.placement;
+    return b.booyah - a.booyah;
+  });
+
+  allRows.forEach((r, i) => (r.rank = i + 1));
+
+  renderPage(currentPage);
+
+  setTimeout(() => {
+    currentPage = 1;
+    renderPage(currentPage);
+  }, 25000);
+}
+
+function renderPage(pageIndex) {
+  const table = document.getElementById("table");
+  const start = pageIndex * rowsPerPage;
+  const end = start + rowsPerPage;
+  const rowsToShow = allRows.slice(start, end);
+
+  table.innerHTML = "";
+
+  rowsToShow.forEach((r, i) => {
+    const row = document.createElement("div");
+    row.className = "row";
+
+    row.innerHTML = `
+  <div class="cell rank-cell">${r.rank}</div>
+
+  <div class="cell team-cell">
+    <img src="../logos/${r.logo}" />
+    <span>${r.team}</span>
+  </div>
+
+  <div class="cell stat">${r.booyah}</div>
+  <div class="cell stat">${r.kills}</div>
+  <div class="cell stat">${r.placement}</div>
+  <div class="cell stat">${r.points}</div>
+`;
+
+
+    table.appendChild(row);
+
+    setTimeout(() => row.classList.add("animate"), i * 120);
+  });
+}
+
+fetchSheet();
+
+</script>
+
+</body>
+</html>
