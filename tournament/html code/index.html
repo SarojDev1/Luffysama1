@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Still Production</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0f17; --card:#0f1724; --accent:#7c3aed; --muted:#9aa4b2; --glass: rgba(255,255,255,0.03);
+      --radius:14px; --container:1200px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter, system-ui, -apple-system, Roboto, "Segoe UI", "Helvetica Neue", Arial;
+      background: linear-gradient(180deg,#071022 0%, #081423 60%); color:#e6eef8; -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale; line-height:1.45;
+    }
+    .wrap{max-width:var(--container); margin:0 auto; padding:28px}
+
+    /* NAV */
+    header{position:sticky; top:14px; z-index:50}
+    .nav{display:flex;align-items:center;gap:20px;justify-content:space-between; background:transparent}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#ef4444);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff}
+    nav ul{display:flex;gap:18px;list-style:none;padding:0;margin:0}
+    nav a{color:var(--muted);text-decoration:none;font-weight:600}
+    .cta{background:linear-gradient(90deg,var(--accent),#ef4444);color:white;padding:10px 14px;border-radius:12px;text-decoration:none;font-weight:700}
+    .burger{display:none}
+
+    /* HERO */
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;margin-top:36px}
+    .hero-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:18px;padding:28px;box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+    h1{font-size:38px;margin:0 0 10px;line-height:1.02}
+    p.lead{color:var(--muted);margin:0 0 18px}
+    .actions{display:flex;gap:12px}
+    .btn{padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);background:var(--glass);color:#fff;text-decoration:none;font-weight:700}
+    .highlight{color:var(--accent)}
+
+    /* Feature list */
+    .features{display:flex;gap:12px;margin-top:18px}
+    .feature{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:12px;border-radius:12px;flex:1}
+    .feature h4{margin:6px 0 4px}
+    .muted{color:var(--muted);font-size:14px}
+
+    /* Right column */
+    .live-preview{background:#02050a;border-radius:12px;padding:12px;}
+    .preview-window{height:260px;background:linear-gradient(180deg,#061226,#08203a);border-radius:10px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.25);font-weight:700}
+
+    /* Portfolio */
+    .section{margin-top:46px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px;border-radius:12px}
+    .card img{width:100%;height:140px;object-fit:cover;border-radius:8px}
+
+    /* Team & Contact */
+    .team{display:flex;gap:14px}
+    .person{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:12px;border-radius:10px;flex:1;text-align:center}
+
+    footer{margin-top:46px;padding:22px 0;text-align:center;color:var(--muted)}
+
+    /* Video */
+    .video-wrapper{
+      position:relative;
+      width:100%;
+      padding-top:56.25%;
+      background:#02050a;
+      border-radius:14px;
+      overflow:hidden;
+      box-shadow:0 8px 30px rgba(2,6,23,0.6);
+    }
+    .video-wrapper iframe{
+      position:absolute;
+      top:0; left:0;
+      width:100%; height:100%;
+      border:0;
+    }
+
+    /* Responsive */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr}
+      .grid{grid-template-columns:repeat(2,1fr)}
+      .burger{display:block}
+      nav ul{display:none}
+    }
+    @media (max-width:560px){
+      .grid{grid-template-columns:1fr}
+      h1{font-size:28px}
+    }
+
+    /* Simple animations */
+    .fade-up{transform:translateY(8px);opacity:0;animation:up .7s ease forwards}
+    @keyframes up{to{transform:none;opacity:1}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="nav">
+        <div class="brand">
+          <div class="logo">CC</div>
+          <div>
+            <div style="font-weight:800">Still Production</div>
+            <div style="font-size:12px;color:var(--muted)">Production & Live Graphics</div>
+          </div>
+        </div>
+
+        <nav>
+          <ul>
+            <li><a href="booyahteam.html">Booyah Team</a></li>
+            <li><a href="matchwiseresult.html">MatchwiseResult</a></li>
+            <li><a href="mapsstructure.html">MapsStructure</a></li>
+            <li><a href="OVERALLRESULT.html">OVERALLRESULT</a></li>
+          </ul>
+        </nav>
+
+        <div style="display:flex;gap:12px;align-items:center">
+          <a class="cta" href="https://discord.gg/MVeHW7FBDq">Book a demo</a>
+          <button class="burger" aria-label="menu" onclick="toggleNav()">☰</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- 5 DEMO VIDEOS -->
+  <div class="section" id="videos">
+    <h2>Live Demo Videos</h2>
+
+    <div class="video-wrapper">
+      <iframe src="https://www.youtube.com/embed/6oeebwRSBVI" allowfullscreen></iframe>
+    </div><br>
+
+    <div class="video-wrapper">
+      <iframe src="https://www.youtube.com/embed/EHr2G9AlIys" allowfullscreen></iframe>
+    </div><br>
+
+    <div class="video-wrapper">
+      <iframe src="https://www.youtube.com/embed/EEX-WO27dZg" allowfullscreen></iframe>
+    </div><br>
+
+  </div>
+
+</div>
+
+  <script>
+    function toggleNav(){
+      const ul = document.querySelector('nav ul');
+      if(!ul) return; ul.style.display = (ul.style.display === 'flex') ? 'none' : 'flex';
+    }
+  </script>
+
+</body>
+</html>
