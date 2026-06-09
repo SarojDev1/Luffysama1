@@ -1,153 +1,215 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Still Production</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#0b0f17; --card:#0f1724; --accent:#7c3aed; --muted:#9aa4b2; --glass: rgba(255,255,255,0.03);
-      --radius:14px; --container:1200px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; font-family:Inter, system-ui, -apple-system, Roboto, "Segoe UI", "Helvetica Neue", Arial;
-      background: linear-gradient(180deg,#071022 0%, #081423 60%); color:#e6eef8; -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale; line-height:1.45;
-    }
-    .wrap{max-width:var(--container); margin:0 auto; padding:28px}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FF Bermuda Drop Map</title>
 
-    /* NAV */
-    header{position:sticky; top:14px; z-index:50}
-    .nav{display:flex;align-items:center;gap:20px;justify-content:space-between; background:transparent}
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#ef4444);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff}
-    nav ul{display:flex;gap:18px;list-style:none;padding:0;margin:0}
-    nav a{color:var(--muted);text-decoration:none;font-weight:600}
-    .cta{background:linear-gradient(90deg,var(--accent),#ef4444);color:white;padding:10px 14px;border-radius:12px;text-decoration:none;font-weight:700}
-    .burger{display:none}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-    /* HERO */
-    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;margin-top:36px}
-    .hero-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:18px;padding:28px;box-shadow:0 8px 30px rgba(2,6,23,0.6)}
-    h1{font-size:38px;margin:0 0 10px;line-height:1.02}
-    p.lead{color:var(--muted);margin:0 0 18px}
-    .actions{display:flex;gap:12px}
-    .btn{padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);background:var(--glass);color:#fff;text-decoration:none;font-weight:700}
-    .highlight{color:var(--accent)}
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
 
-    /* Feature list */
-    .features{display:flex;gap:12px;margin-top:18px}
-    .feature{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:12px;border-radius:12px;flex:1}
-    .feature h4{margin:6px 0 4px}
-    .muted{color:var(--muted);font-size:14px}
+body{
+  background:#1a1a1a;
+  color:white;
+}
 
-    /* Right column */
-    .live-preview{background:#02050a;border-radius:12px;padding:12px;}
-    .preview-window{height:260px;background:linear-gradient(180deg,#061226,#08203a);border-radius:10px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.25);font-weight:700}
+.header{
+  background:#222;
+  padding:15px;
+  text-align:center;
+  font-size:24px;
+  font-weight:bold;
+}
 
-    /* Portfolio */
-    .section{margin-top:46px}
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px;border-radius:12px}
-    .card img{width:100%;height:140px;object-fit:cover;border-radius:8px}
+.controls{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px;
+  padding:15px;
+  background:#222;
+}
 
-    /* Team & Contact */
-    .team{display:flex;gap:14px}
-    .person{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:12px;border-radius:10px;flex:1;text-align:center}
+input, select, button{
+  padding:10px;
+  border-radius:6px;
+  border:none;
+}
 
-    footer{margin-top:46px;padding:22px 0;text-align:center;color:var(--muted)}
+select{
+  background:#333;
+  color:white;
+}
 
-    /* Video */
-    .video-wrapper{
-      position:relative;
-      width:100%;
-      padding-top:56.25%;
-      background:#02050a;
-      border-radius:14px;
-      overflow:hidden;
-      box-shadow:0 8px 30px rgba(2,6,23,0.6);
-    }
-    .video-wrapper iframe{
-      position:absolute;
-      top:0; left:0;
-      width:100%; height:100%;
-      border:0;
-    }
+button{
+  background:#28a745;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
 
-    /* Responsive */
-    @media (max-width:980px){
-      .hero{grid-template-columns:1fr}
-      .grid{grid-template-columns:repeat(2,1fr)}
-      .burger{display:block}
-      nav ul{display:none}
-    }
-    @media (max-width:560px){
-      .grid{grid-template-columns:1fr}
-      h1{font-size:28px}
-    }
+.download-btn{
+  background:#007bff;
+}
 
-    /* Simple animations */
-    .fade-up{transform:translateY(8px);opacity:0;animation:up .7s ease forwards}
-    @keyframes up{to{transform:none;opacity:1}}
-  </style>
+.map-container{
+  display:flex;
+  justify-content:center;
+  padding:20px;
+}
+
+.map{
+  position:relative;
+  width:900px;
+  height:900px;
+  background:url("https://i.postimg.cc/HsdDvbmn/IMG-7352.jpg") center/cover no-repeat;
+  overflow:hidden;
+}
+
+.team-marker{
+  position:absolute;
+  transform:translate(-50%,-50%);
+}
+
+.team-logo{
+  width:65px;
+  height:65px;
+  border-radius:50%;
+  object-fit:cover;
+  border:3px solid #28a745;
+  background:white;
+  box-shadow:0 4px 10px rgba(0,0,0,0.5);
+}
+
+@media(max-width:950px){
+  .map{
+    width:95vw;
+    height:95vw;
+  }
+
+  .team-logo{
+    width:45px;
+    height:45px;
+  }
+}
+</style>
 </head>
+
 <body>
-  <div class="wrap">
-    <header>
-      <div class="nav">
-        <div class="brand">
-          <div class="logo">CC</div>
-          <div>
-            <div style="font-weight:800">Still Production</div>
-            <div style="font-size:12px;color:var(--muted)">Production & Live Graphics</div>
-          </div>
-        </div>
 
-        <nav>
-          <ul>
-            <li><a href="booyahteam.html">Booyah Team</a></li>
-            <li><a href="matchwiseresult.html">MatchwiseResult</a></li>
-            <li><a href="mapsstructure.html">MapsStructure</a></li>
-            <li><a href="OVERALLRESULT.html">OVERALLRESULT</a></li>
-          </ul>
-        </nav>
+<div class="header">FREE FIRE BERMUDA DROP MAP</div>
 
-        <div style="display:flex;gap:12px;align-items:center">
-          <a class="cta" href="https://discord.gg/MVeHW7FBDq">Book a demo</a>
-          <button class="burger" aria-label="menu" onclick="toggleNav()">☰</button>
-        </div>
-      </div>
-    </header>
+<div class="controls">
+  <input type="file" id="logoInput" accept="image/*">
 
-    <!-- 5 DEMO VIDEOS -->
-  <div class="section" id="videos">
-    <h2>Live Demo Videos</h2>
+  <select id="location">
+    <option value="peak">Peak</option>
+    <option value="clocktower">Clock Tower</option>
+    <option value="factory">Factory</option>
+    <option value="pochinok">Pochinok</option>
+    <option value="mill">Mill</option>
+    <option value="riverside">Riverside</option>
+    <option value="shipyard">Shipyard</option>
+    <option value="graveyard">Graveyard</option>
+    <option value="bullseye">Bullseye</option>
+    <option value="hangar">Hangar</option>
+    <option value="observatory">Observatory</option>
+    <option value="rimnam">Rim Nam</option>
+    <option value="marselectric">Mars Electric</option>
+    <option value="katulistiwa">Katulistiwa</option>
+    <option value="plantation">Plantation</option>
+    <option value="bimasakti">Bimasakti Strip</option>
+    <option value="capetown">Cape Town</option>
+    <option value="kotatua">Kota Tua</option>
+    <option value="keraton">Keraton</option>
+    <option value="sentosa">Sentosa</option>
+  </select>
 
-    <div class="video-wrapper">
-      <iframe src="https://www.youtube.com/embed/6oeebwRSBVI" allowfullscreen></iframe>
-    </div><br>
-
-    <div class="video-wrapper">
-      <iframe src="https://www.youtube.com/embed/EHr2G9AlIys" allowfullscreen></iframe>
-    </div><br>
-
-    <div class="video-wrapper">
-      <iframe src="https://www.youtube.com/embed/EEX-WO27dZg" allowfullscreen></iframe>
-    </div><br>
-
-  </div>
-
+  <button onclick="addLogo()">Add Team</button>
+  <button onclick="clearMap()">Clear Map</button>
+  <button class="download-btn" onclick="downloadMap()">Download Pic</button>
 </div>
 
-  <script>
-    function toggleNav(){
-      const ul = document.querySelector('nav ul');
-      if(!ul) return; ul.style.display = (ul.style.display === 'flex') ? 'none' : 'flex';
-    }
-  </script>
+<div class="map-container">
+  <div class="map" id="map"></div>
+</div>
+
+<script>
+const places = {
+  shipyard:{x:45,y:13},
+  bullseye:{x:28,y:22},
+  graveyard:{x:22,y:35},
+  observatory:{x:10,y:45},
+  hangar:{x:22,y:63},
+  rimnam:{x:12,y:84},
+  clocktower:{x:36,y:60},
+  factory:{x:47,y:70},
+  pochinok:{x:58,y:77},
+  marselectric:{x:53,y:90},
+  katulistiwa:{x:35,y:40},
+  bimasakti:{x:47,y:48},
+  plantation:{x:53,y:35},
+  peak:{x:61,y:58},
+  riverside:{x:62,y:32},
+  mill:{x:75,y:36},
+  keraton:{x:87,y:42},
+  capetown:{x:88,y:60},
+  kotatua:{x:76,y:68},
+  sentosa:{x:87,y:82}
+};
+
+function addLogo(){
+  const file = document.getElementById("logoInput").files[0];
+
+  if(!file){
+    alert("Please select team logo first");
+    return;
+  }
+
+  const location = document.getElementById("location").value;
+  const reader = new FileReader();
+
+  reader.onload = function(e){
+    const marker = document.createElement("div");
+    marker.className = "team-marker";
+
+    marker.style.left = places[location].x + "%";
+    marker.style.top = places[location].y + "%";
+
+    marker.innerHTML = `<img src="${e.target.result}" class="team-logo">`;
+
+    document.getElementById("map").appendChild(marker);
+  };
+
+  reader.readAsDataURL(file);
+}
+
+function clearMap(){
+  document.getElementById("map").innerHTML = "";
+}
+
+function downloadMap(){
+  const map = document.getElementById("map");
+
+  html2canvas(map, {
+    useCORS:true,
+    backgroundColor:null,
+    scale:2
+  }).then(canvas => {
+    const link = document.createElement("a");
+    link.download = "bermuda-drop-map.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  });
+}
+</script>
 
 </body>
 </html>
